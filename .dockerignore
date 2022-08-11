@@ -1,0 +1,10 @@
+# Ignore everything except for Python files and the required file.
+*
+!*.py
+!beam_flex_demo
+!beam-flex-demo-metadata
+!tests
+!pyproject.toml
+!setup.py
+!README.rst
+!requirements.txt

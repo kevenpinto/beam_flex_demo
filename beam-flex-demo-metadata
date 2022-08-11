@@ -1,0 +1,16 @@
+{
+  "description": "Beam Flex Template Demo",
+  "name": "Beam-Flex-Template-Demo",
+  "parameters": [
+    {
+      "name": "output",
+      "label": "GCS folder to write Files to",
+      "helpText": "GCS folder to write Files to. e.g. gs://<mybucket>",
+      "regexes": [
+        "^gs:\\/\\/[^\\n\\r]+$"
+      ],
+      "paramType": "GCS_WRITE_FOLDER",
+      "isOptional": false
+    }
+  ]
+}
