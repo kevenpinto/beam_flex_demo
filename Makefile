@@ -22,6 +22,9 @@ help: ## This is help
 
 init: ## Build Bucket for Demo and the Artifact Registry -- Run this One time Only!
 	@gcloud config set project ${GCP_PROJECT}
+	@gcloud compute networks subnets update default \
+	--region=${GCP_REGION} \
+	--enable-private-ip-google-access
 	@echo "Enabling Dataflow Service...." && gcloud services enable dataflow --project ${GCP_PROJECT}
 	@echo "Building Bucket to Store template...." && gsutil mb -c standard -l ${GCP_REGION} -p ${GCP_PROJECT} ${GCS_PATH}
 	@echo "Building Artifact Repo to Store Docker Image of Code...." && gcloud artifacts repositories create ${TEMPLATE_NAME} \
