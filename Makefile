@@ -22,11 +22,12 @@ help: ## This is help
 
 init: ## Build Bucket for Demo and the Artifact Registry -- Run this One time Only!
 	@gcloud config set project ${GCP_PROJECT}
-	@echo "Enabbling Private Google Access in Region ${GCP_REGION} ......"
+	@echo "Enabling Private Google Access in Region ${GCP_REGION} ......"
 	@gcloud compute networks subnets update default \
 	--region=${GCP_REGION} \
 	--enable-private-ip-google-access
 	@echo "Enabling Dataflow Service...." && gcloud services enable dataflow --project ${GCP_PROJECT}
+	@echo "Enabling Artifact Registry..." && gcloud services enable artifactregistry.googleapis.com --project ${GCP_PROJECT}
 	@echo "Building Bucket to Store template...." && gsutil mb -c standard -l ${GCP_REGION} -p ${GCP_PROJECT} ${GCS_PATH}
 	@echo "Building Artifact Repo to Store Docker Image of Code...." && gcloud artifacts repositories create ${TEMPLATE_NAME} \
     --repository-format=docker \
@@ -56,7 +57,6 @@ run: ## Run the Dataflow Container
 
 test-template: ## Test the Integrity of the Flex Container
 	@gcloud config set project ${GCP_PROJECT}
-	@gcloud auth configure-docker ${GCP_REGION}.pkg.dev
 	@docker pull ${TEMPLATE_IMAGE}
 	@echo "Checking if ENV Var FLEX_TEMPLATE_PYTHON_PY_FILE is Available" && docker run --rm --entrypoint /bin/bash ${TEMPLATE_IMAGE} -c 'env|grep -q "FLEX_TEMPLATE_PYTHON_PY_FILE" && echo ✓'
 	@echo "Checking if ENV Var FLEX_TEMPLATE_PYTHON_SETUP_FILE is Available" && docker run --rm --entrypoint /bin/bash ${TEMPLATE_IMAGE} -c 'env|grep -q "FLEX_TEMPLATE_PYTHON_PY_FILE" && echo ✓'
