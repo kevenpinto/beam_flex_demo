@@ -57,6 +57,7 @@ run: ## Run the Dataflow Container
 
 test-template: ## Test the Integrity of the Flex Container
 	@gcloud config set project ${GCP_PROJECT}
+	@gcloud auth configure-docker  ${GCP_REGION}-docker.pkg.dev
 	@docker pull ${TEMPLATE_IMAGE}
 	@echo "Checking if ENV Var FLEX_TEMPLATE_PYTHON_PY_FILE is Available" && docker run --rm --entrypoint /bin/bash ${TEMPLATE_IMAGE} -c 'env|grep -q "FLEX_TEMPLATE_PYTHON_PY_FILE" && echo ✓'
 	@echo "Checking if ENV Var FLEX_TEMPLATE_PYTHON_SETUP_FILE is Available" && docker run --rm --entrypoint /bin/bash ${TEMPLATE_IMAGE} -c 'env|grep -q "FLEX_TEMPLATE_PYTHON_PY_FILE" && echo ✓'
