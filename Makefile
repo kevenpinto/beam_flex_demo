@@ -22,6 +22,7 @@ help: ## This is help
 
 init: ## Build Bucket for Demo and the Artifact Registry -- Run this One time Only!
 	@gcloud config set project ${GCP_PROJECT}
+	@echo "Enabbling Private Google Access in Region ${GCP_REGION} ......"
 	@gcloud compute networks subnets update default \
 	--region=${GCP_REGION} \
 	--enable-private-ip-google-access
@@ -54,6 +55,8 @@ run: ## Run the Dataflow Container
     --parameters output=${OUTPUT}
 
 test-template: ## Test the Integrity of the Flex Container
+	@gcloud config set project ${GCP_PROJECT}
+	@gcloud auth configure-docker ${GCP_REGION}.pkg.dev
 	@docker pull ${TEMPLATE_IMAGE}
 	@echo "Checking if ENV Var FLEX_TEMPLATE_PYTHON_PY_FILE is Available" && docker run --rm --entrypoint /bin/bash ${TEMPLATE_IMAGE} -c 'env|grep -q "FLEX_TEMPLATE_PYTHON_PY_FILE" && echo ✓'
 	@echo "Checking if ENV Var FLEX_TEMPLATE_PYTHON_SETUP_FILE is Available" && docker run --rm --entrypoint /bin/bash ${TEMPLATE_IMAGE} -c 'env|grep -q "FLEX_TEMPLATE_PYTHON_PY_FILE" && echo ✓'
